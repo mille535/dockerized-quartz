@@ -1,5 +1,9 @@
 name: Build and Push OCI Image
 
+runner:
+  envs:
+    DOCKER_HOST: tcp://dind:2375
+
 on:
   push:
     branches:
