@@ -9,6 +9,8 @@ jobs:
   build-and-push:
     # Use a runner with Docker access (adjust label as necessary for your runner setup)
     runs-on: ubuntu-latest
+    env:
+      DOCKER_HOST: tcp://dind:2375  # Add this
     
     steps:
       - name: Checkout repository
