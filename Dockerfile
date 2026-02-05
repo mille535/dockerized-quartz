@@ -1,12 +1,16 @@
-FROM debian:trixie-slim
+FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 
-# Install Node.js, Nginx, git, and inotify-tools
-RUN apt-get update && \
-    apt-get install -y curl apprise gnupg2 ca-certificates lsb-release inotify-tools nginx git apache2-utils && \
-    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
-    apt-get install -y nodejs
+# Install required packages
+RUN apk add --no-cache \
+    nginx \
+    git \
+    inotify-tools \
+    apache2-utils \
+    curl \
+    ca-certificates \
+    apprise
 
 COPY /scripts /usr/src/app/scripts
 RUN chmod +x /usr/src/app/scripts/*
@@ -24,11 +28,12 @@ COPY /docs /vault
 EXPOSE 80
 
 # Create Nginx config for serving the static files
-RUN rm /etc/nginx/sites-enabled/default
+RUN rm -f /etc/nginx/http.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN cp -R /etc/nginx/ /etc/nginx_default/
 
 # Ensure directories exist for Nginx to serve static files and logs
-RUN mkdir -p /usr/share/nginx/html /var/log/nginx && chown -R www-data:www-data /usr/share/nginx/html
+RUN mkdir -p /usr/share/nginx/html /var/log/nginx && \
+    chown -R nginx:nginx /usr/share/nginx/html
 
 CMD ["/bin/sh", "-c", "/usr/src/app/scripts/bootstrap.sh"]
