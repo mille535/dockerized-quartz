@@ -1,3 +1,8 @@
+###########################################################
+#
+# This will build and push container to Forgejo packages
+#
+###########################################################
 name: Build and Push OCI Image
 
 on:
