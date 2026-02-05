@@ -2,12 +2,12 @@ name: Build and Push Docker Image (Alpine)
 on:
   push:
     branches:
-      - main
+      - alpine  # Changed from 'main'
     tags:
       - 'v*'
   pull_request:
     branches:
-      - main
+      - alpine  # Changed from 'main'
   workflow_dispatch:
 
 env:
@@ -39,7 +39,7 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            # Tag with 'alpine' on main branch
+            # Tag with 'alpine' on alpine branch
             type=raw,value=alpine,enable={{is_default_branch}}
             # Tag with version-alpine on tags (e.g., v1.0.0 -> 1.0.0-alpine)
             type=semver,pattern={{version}}-alpine
