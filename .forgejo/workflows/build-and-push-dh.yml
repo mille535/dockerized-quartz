@@ -2,12 +2,12 @@ name: Build and Push Docker Image (Alpine)
 on:
   push:
     branches:
-      - alpine  # Changed from 'main'
+      - alpine
     tags:
       - 'v*'
   pull_request:
     branches:
-      - alpine  # Changed from 'main'
+      - alpine
   workflow_dispatch:
 
 env:
@@ -39,20 +39,16 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            # Tag with 'alpine' on alpine branch
-            type=raw,value=alpine,enable={{is_default_branch}}
+            # Tag with 'alpine' on alpine branch (acts like 'latest' for alpine)
+            type=raw,value=alpine,enable=${{ github.ref == 'refs/heads/alpine' }}
             # Tag with version-alpine on tags (e.g., v1.0.0 -> 1.0.0-alpine)
             type=semver,pattern={{version}}-alpine
             # Tag with major.minor-alpine on tags (e.g., v1.0.0 -> 1.0-alpine)
             type=semver,pattern={{major}}.{{minor}}-alpine
             # Tag with major-alpine on tags (e.g., v1.0.0 -> 1-alpine)
             type=semver,pattern={{major}}-alpine
-            # Tag with branch name-alpine
-            type=ref,event=branch,suffix=-alpine
-            # Tag with PR number-alpine
-            type=ref,event=pr,suffix=-alpine
-            # Tag with commit SHA-alpine
-            type=sha,prefix={{branch}}-,suffix=-alpine
+            # Tag with commit SHA for tracking
+            type=sha,prefix=alpine-sha-
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
