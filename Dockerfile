@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 # Install required packages
 RUN apk add --no-cache \
+    coreutils \
     nginx \
     git \
     inotify-tools \
