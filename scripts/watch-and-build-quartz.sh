@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Directory where the Obsidian notes are located
 WATCH_DIR="/vault"

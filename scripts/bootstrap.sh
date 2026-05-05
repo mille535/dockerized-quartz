@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 DEFAULT_REPO="https://github.com/jackyzha0/quartz.git"
 QUARTZ_DIR="/usr/src/app/quartz"
@@ -10,11 +10,13 @@ handle_error() {
 }
 
 # Check if the /etc/nginx directory is empty
-if [ ! "$(ls -A /etc/nginx)" ]; then
-    echo "/etc/nginx is empty. Copying default configuration..."
-    cp -r /etc/nginx_default/* /etc/nginx/
+if [ ! -f /etc/nginx/.configured ]; then
+    echo "First run detected. Copying default configuration..."
+    rm -rf /etc/nginx/*
+    cp -R /etc/nginx_default/* /etc/nginx/
+    touch /etc/nginx/.configured
 else
-    echo "/etc/nginx already contains configuration. Skipping copy..."
+    echo "Nginx already configured. Skipping copy..."
 fi
 
 # Check if the user provided a custom repo via an environment variable

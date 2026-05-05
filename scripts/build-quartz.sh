@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 QUARTZ_DIR="/usr/src/app/quartz"
 VAULT_DIR="/vault"
